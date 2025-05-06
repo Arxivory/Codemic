@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Test Student API</title>
+</head>
+<body>
+<h1>Test Student API</h1>
+
+<label>Name: <input type="text" id="name" /></label><br>
+<label>Email: <input type="text" id="email" /></label><br>
+<button onclick="sendRequest()">Create Student</button>
+<button onclick="getStudents()">Get All Students</button>
+<pre id="response"></pre>
+
+<script>
+    function sendRequest() {
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+
+      fetch("http://localhost:8080/api/students", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email })
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        document.getElementById("response").textContent = "Error: " + err;
+      });
+    }
+    function getStudents() {
+    fetch("http://localhost:8080/api/students")
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+      });
+  }
+</script>
+</body>
+</html>
