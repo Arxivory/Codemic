@@ -19,7 +19,7 @@ public class Page implements Serializable {
     private static final long serialVersionUID = 8397608760754233645L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "content", nullable = false)

@@ -22,7 +22,7 @@ public class Instructor implements Serializable {
     private static final long serialVersionUID = -213847920631961630L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "first_name", nullable = false)

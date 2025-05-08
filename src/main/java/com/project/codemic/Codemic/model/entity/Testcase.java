@@ -20,7 +20,7 @@ public class Testcase implements Serializable {
     private static final long serialVersionUID = -2137365102577942207L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "input", nullable = false)

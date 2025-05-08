@@ -19,13 +19,14 @@ public class StudentSubject implements Serializable {
     private static final long serialVersionUID = 4871280281822347380L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;
 

@@ -20,7 +20,7 @@ public class Activity implements Serializable {
     private static final long serialVersionUID = -3065973954180008816L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "title", nullable = false)

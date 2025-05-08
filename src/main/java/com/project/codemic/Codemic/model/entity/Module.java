@@ -21,7 +21,7 @@ public class Module implements Serializable {
     private static final long serialVersionUID = 65170077247403169L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "title", nullable = false)

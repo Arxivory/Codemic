@@ -21,7 +21,7 @@ public class Submission implements Serializable {
     private static final long serialVersionUID = -1669912362468399435L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "code", nullable = false)
