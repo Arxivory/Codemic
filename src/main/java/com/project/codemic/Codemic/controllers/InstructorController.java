@@ -1,8 +1,10 @@
-package com.project.codemic.Codemic.controller;
+package com.project.codemic.Codemic.controllers;
 
 import com.project.codemic.Codemic.model.entity.Instructor;
 import com.project.codemic.Codemic.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,31 +17,37 @@ public class InstructorController {
     private InstructorService instructorService;
 
     @PostMapping
-    public Instructor createInstructor(@RequestBody Instructor instructor) {
-        return instructorService.createInstructor(instructor);
+    public ResponseEntity<Instructor> createInstructor(@RequestBody Instructor instructor) {
+        return new ResponseEntity<>(instructorService.createInstructor(instructor), HttpStatus.CREATED);
     }
-
 
     @GetMapping
-    public List<Instructor> getAllInstructors() {
-        return instructorService.getAllInstructors();
+    public ResponseEntity<List<Instructor>> getAllInstructors() {
+        return new ResponseEntity<>(instructorService.getAllInstructors(), HttpStatus.OK);
     }
-
 
     @GetMapping("/{id}")
-    public Instructor getInstructorById(@PathVariable Integer id) {
-        return instructorService.getInstructorById(id);
+    public ResponseEntity<Instructor> getInstructorById(@PathVariable Integer id) {
+        return instructorService.getInstructorById(id)
+                .map(instructor -> new ResponseEntity<>(instructor, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
 
     @PutMapping("/{id}")
-    public Instructor updateInstructor(@PathVariable Integer id, @RequestBody Instructor instructor) {
-        return instructorService.updateInstructor(id, instructor);
+    public ResponseEntity<Instructor> updateInstructor(@PathVariable Integer id, @RequestBody Instructor instructor) {
+        Instructor updatedInstructor = instructorService.updateInstructor(id, instructor);
+        return updatedInstructor != null
+                ? new ResponseEntity<>(updatedInstructor, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
     @DeleteMapping("/{id}")
-    public void deleteInstructor(@PathVariable Integer id) {
-        instructorService.deleteInstructor(id);
+    public ResponseEntity<Instructor> deleteInstructor(@PathVariable Integer id) {
+        return instructorService.getInstructorById(id)
+                .map(instructor -> {
+                    instructorService.deleteInstructorById(id);
+                    return new ResponseEntity<>(instructor, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

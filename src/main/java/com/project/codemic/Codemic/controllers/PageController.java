@@ -1,5 +1,6 @@
 package com.project.codemic.Codemic.controllers;
 
+import com.project.codemic.Codemic.model.entity.Instructor;
 import com.project.codemic.Codemic.model.entity.Page;
 import com.project.codemic.Codemic.service.PageService;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ import java.util.List;
 
     @PostMapping
     public ResponseEntity<Page> createPage(@Valid @RequestBody Page page) {
-        return new ResponseEntity<>pageService.createPage(page), HttpStatus.CREATED);
+        return new ResponseEntity<>(pageService.createPage(page), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -28,28 +29,27 @@ import java.util.List;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page> getPagebyId(@PathVariable Long Id) {
+    public ResponseEntity<Page> getPagebyId(@PathVariable Integer id) {
       return pageService.getPageById(id)
-        .map(page -> new ResponseEntity<>(page, HttpStatus.OK))
-        orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+              .map(page -> new ResponseEntity<>(page, HttpStatus.OK))
+              .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
         
     @PutMapping("/{id}")
-    public ResponseEntity<Page>updatePage(@PathVariable Long id, @Valid @RequestBody Page pageDetails) {
-      return pageService getPageById(id)
-        .map(existing Page -> { Page updatedPage = pageService.updatePage(id, pageDetails);
-         return now ResponseEntity<>(updatedPage, HttpStatus.OK);
-      })
-        orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<Page>updatePage(@PathVariable Integer id, @Valid @RequestBody Page pageDetails) {
+        Page updatedPage = pageService.updatePage(id, pageDetails);
+        return updatedPage != null
+                ? new ResponseEntity<>(updatedPage, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>deletePage(PathVariable Long id)
-    return pageService.getPageById(id)
-            .map(page -> {
-              pageService.deletePage(id);
-              return new ResponseEntity<void>(HttpStatus.NO_CONTENT);
-            })
-        orElse (new ResponseEntity<>(HttpStatus.NOT_FOUND));
-}
+    public ResponseEntity<Page> deleteInstructor(@PathVariable Integer id) {
+        return pageService.getPageById(id)
+                .map(page -> {
+                    pageService.deletePage(id);
+                    return new ResponseEntity<>(page, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
