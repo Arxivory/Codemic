@@ -9,18 +9,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("api/students")
-public class PageController {
+  @RequestMapping("api/students")
+  public class PageController {
 
     @Autowired
     private PageService pageService;
 
     @PostMapping
     public ResponseEntity<Page> createPage(@Valid @RequestBody Page page) {
-        return new ResponseEntity<>(pageService.createPage(page), HttpStatus.CREATED);
+        return new ResponseEntity<>pageService.createPage(page), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -29,26 +28,28 @@ public class PageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page> getPageById(@PathVariable Integer id) {
-        return pageService.getPageById(id)
-                .map(page -> ResponseEntity.ok(page))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Page> getPagebyId(@PathVariable Long Id) {
+      return pageService.getPageById(id)
+        .map(page -> new ResponseEntity<>(page, HttpStatus.OK))
+        orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-
-
+        
     @PutMapping("/{id}")
-    public ResponseEntity<Page> updatePage(@PathVariable Integer id, @Valid @RequestBody Page pageDetails) {
-        Page updatedPage = pageService.updatePage(id, pageDetails);
-        return updatedPage != null ? ResponseEntity.ok(updatedPage) : ResponseEntity.notFound().build();
+    public ResponseEntity<Page>updatePage(@PathVariable Long id, @Valid @RequestBody Page pageDetails) {
+      return pageService getPageById(id)
+        .map(existing Page -> { Page updatedPage = pageService.updatePage(id, pageDetails);
+         return now ResponseEntity<>(updatedPage, HttpStatus.OK);
+      })
+        orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Page> deletePage(@PathVariable Integer id) {
-        return pageService.getPageById(id)
-                .map(page -> {
-                    pageService.deletePage(id);
-                    return ResponseEntity.ok(page);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void>deletePage(PathVariable Long id)
+    return pageService.getPageById(id)
+            .map(page -> {
+              pageService.deletePage(id);
+              return new ResponseEntity<void>(HttpStatus.NO_CONTENT);
+            })
+        orElse (new ResponseEntity<>(HttpStatus.NOT_FOUND));
+}
 }
