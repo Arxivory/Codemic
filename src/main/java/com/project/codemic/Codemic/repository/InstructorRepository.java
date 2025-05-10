@@ -1,9 +1,10 @@
 package com.project.codemic.Codemic.repository;
 
 import com.project.codemic.Codemic.model.entity.Instructor;
-import org.hibernate.type.descriptor.converter.spi.JpaAttributeConverter;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import java.util.List;
 
 @Repository
-public interface InstructorRepository extends JpaAttributeConverter<Instructor, Integer> {
+public interface InstructorRepository extends JpaRepository<Instructor, Integer> {
 }
