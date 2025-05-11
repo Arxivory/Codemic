@@ -34,11 +34,8 @@ public class SubmissionServiceImpl implements SubmissionService {
         Optional<Submission> submissionOptional = submissionRepository.findById(id);
         if (submissionOptional.isPresent()) {
             Submission existingSubmission = submissionOptional.get();
-            existingSubmission.setContent(submissionDetails.getContent());
-            existingSubmission.setTitle(submissionDetails.getTitle());
-            existingSubmission.setStatus(submissionDetails.getStatus());
-            existingSubmission.setUserId(submissionDetails.getUserId());
-            // Update any other fields as needed
+            existingSubmission.setGrade(submissionDetails.getGrade());
+            existingSubmission.setTimeComplexity(submissionDetails.getTimeComplexity());
             return submissionRepository.save(existingSubmission);
         }
         return null;
