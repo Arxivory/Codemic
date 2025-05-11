@@ -45,6 +45,8 @@ public class TestcaseServiceImpl implements TestcaseService {
 
     @Override
     public void deleteTestcase(Integer id) {
-        testcaseRepository.deleteById(id);
+        Optional<Testcase> testcaseOptional = testcaseRepository.findById(id);
+        if (testcaseOptional.isPresent())
+            testcaseRepository.deleteById(id);
     }
 }

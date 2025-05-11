@@ -51,7 +51,9 @@ public class InstructorServiceImpl implements InstructorService {
     // DELETE
     @Override
     public void deleteInstructorById(Integer id) {
-        instructorRepository.deleteById(id);
+        Optional<Instructor> instructorOptional = instructorRepository.findById(id);
+        if (instructorOptional.isPresent())
+            instructorRepository.deleteById(id);
     }
 }
 

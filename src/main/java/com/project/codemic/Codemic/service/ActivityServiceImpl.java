@@ -44,6 +44,8 @@ public class ActivityServiceImpl implements ActivityService {
 
     @Override
     public void deleteActivity(Integer id) {
-        activityRepository.deleteById(id);
+        Optional<Activity> activityOptional = activityRepository.findById(id);
+        if (activityOptional.isPresent())
+            activityRepository.deleteById(id);
     }
 }

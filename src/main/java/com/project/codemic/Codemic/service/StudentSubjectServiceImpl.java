@@ -44,6 +44,8 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
 
     @Override
     public void deleteStudentSubject(Integer id) {
-        studentSubjectRepository.deleteById(id);
+        Optional<StudentSubject> studentSubjectOptional = studentSubjectRepository.findById(id);
+        if (studentSubjectOptional.isPresent())
+            studentSubjectRepository.deleteById(id);
     }
 }
