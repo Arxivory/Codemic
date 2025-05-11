@@ -1,32 +1,27 @@
-package com.project.codemic.Codemic.model.entity;
+package com.project.codemic.Codemic.model.request;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.Objects;
 
-import java.io.Serial;
-import java.io.Serializable;
+import com.project.codemic.Codemic.model.entity.Module;
+import com.project.codemic.Codemic.model.entity.Page;
 
-@Data
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
-@Table(name = "pages")
-public class Page implements Serializable {
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-    @Serial
-    private static final long serialVersionUID = 8397608760754233645L;
+public record PageRO(
+    Integer id,
+    @NotBlank(message = "Content is mandatory. aw aw") String content,
+    @NotNull(message = "Module ID is mandatory.") Integer moduleId
+) {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    public Page toEntity(Page page, Module module) {
+        if (Objects.isNull(page)) {
+            page = new Page();
+        }
+        
+        page.setContent(content);
+        page.setModule(module);
 
-    @Column(name = "content", nullable = false)
-    private String content;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "module_id", nullable = false)
-    private Module module;
-
+        return page;
+    }
 }
