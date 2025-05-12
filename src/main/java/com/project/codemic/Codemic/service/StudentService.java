@@ -1,18 +1,20 @@
 package com.project.codemic.Codemic.service;
 
+import com.project.codemic.Codemic.model.dto.StudentDTO;
 import com.project.codemic.Codemic.model.entity.Student;
+import com.project.codemic.Codemic.model.request.StudentRO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
-    Student createStudent(Student student);
+    void createStudent(StudentRO studentRO);
 
-    List<Student> getAllStudents();
+    List<StudentDTO> getAllStudents();
 
-    Optional<Student> getStudentById(Integer id);
+    Student getStudentById(Integer id);
 
-    Student updateStudent(Integer id, Student student);
+    void updateStudent(Integer id, StudentRO studentRO);
 
     void deleteStudent(Integer id);
 }

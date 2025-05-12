@@ -1,18 +1,20 @@
 package com.project.codemic.Codemic.service;
 
+import com.project.codemic.Codemic.model.dto.InstructorDTO;
 import com.project.codemic.Codemic.model.entity.Instructor;
+import com.project.codemic.Codemic.model.request.InstructorRO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface InstructorService {
-    Instructor createInstructor(Instructor instructor);
+    void createInstructor(InstructorRO instructorRO);
 
-    List<Instructor> getAllInstructors();
+    List<InstructorDTO> getAllInstructors();
 
-    Optional<Instructor> getInstructorById(Integer id);
+    Instructor getInstructorById(Integer id);
 
-    Instructor updateInstructor(Integer id, Instructor instructor);
+    void updateInstructor(Integer id, InstructorRO instructorRO);
 
     void deleteInstructorById(Integer id);
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-  @RequestMapping("api/students")
+  @RequestMapping("codemic/students")
   public class PageController {
 
     @Autowired
@@ -29,14 +29,14 @@ import java.util.List;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Page> getPagebyId(@PathVariable Integer id) {
+    public ResponseEntity<Page> getPageById(@PathVariable Integer id) {
       return pageService.getPageById(id)
               .map(page -> new ResponseEntity<>(page, HttpStatus.OK))
               .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
         
     @PutMapping("/{id}")
-    public ResponseEntity<Page>updatePage(@PathVariable Integer id, @Valid @RequestBody Page pageDetails) {
+    public ResponseEntity<Page> updatePage(@PathVariable Integer id, @Valid @RequestBody Page pageDetails) {
         Page updatedPage = pageService.updatePage(id, pageDetails);
         return updatedPage != null
                 ? new ResponseEntity<>(updatedPage, HttpStatus.OK)
@@ -44,7 +44,7 @@ import java.util.List;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Page> deleteInstructor(@PathVariable Integer id) {
+    public ResponseEntity<Page> deletePage(@PathVariable Integer id) {
         return pageService.getPageById(id)
                 .map(page -> {
                     pageService.deletePage(id);

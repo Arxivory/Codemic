@@ -1,46 +1,100 @@
 package com.project.codemic.Codemic.service;
+import com.project.codemic.Codemic.exception.ResourceNotFoundException;
+import com.project.codemic.Codemic.model.dto.PageDTO;
 import com.project.codemic.Codemic.model.entity.Page;
+import com.project.codemic.Codemic.model.entity.Student;
+import com.project.codemic.Codemic.model.mapper.PageMapper;
+import com.project.codemic.Codemic.model.request.PageRO;
 import com.project.codemic.Codemic.repository.PageRepository;
+import com.project.codemic.Codemic.util.MessageUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class PageServiceImpl implements PageService {
+
+    public static final String PAGES = "Pages";
+
+    public static final String PAGE = "Page";
+
     @Autowired
     private PageRepository pageRepository;
 
-    @Override
-    public Page createPage(Page page) {
-        return pageRepository.save(page);
-    }
-    @Override
-    public List<Page> getAllPages() {
-        return pageRepository.findAll();
-    }
+    @Autowired
+    private PageMapper pageMapper;
 
     @Override
-    public Optional<Page> getPageById(Integer id) {
-        return pageRepository.findById(id);
-    }
-
-    @Override
-    public Page updatePage(Integer id, Page pageDetails) {
-        Optional<Page> pageOptional = pageRepository.findById(id);
-        if (pageOptional.isPresent()) {
-            Page existingPage = pageOptional.get();
-            existingPage.setContent(pageDetails.getContent());
-
-            return pageRepository.save(existingPage);
+    public void createPage(PageRO pageRO) {
+        try {
+            pageRepository.save(pageRO.toEntity(null, null));
+        } catch (Exception e) {
+            String errorMessage = MessageUtils.saveErrorMessage(PAGE);
+            log.error(errorMessage);
+            throw new ServiceException(errorMessage, e);
         }
-        return null;
+    }
+
+    @Override
+    public List<PageDTO> getAllPages() {
+        try {
+            List<Page> pages = pageRepository.findAll();
+            log.info(MessageUtils.retrieveSuccessMessage(PAGES));
+            return pages.stream().map(pageMapper::toDTO).toList();
+        } catch (Exception e) {
+            String errorMessage = MessageUtils.retrieveErrorMessage(PAGES);
+            log.error(errorMessage);
+            throw new ServiceException(errorMessage, e);
+        }
+    }
+
+    @Override
+    public Page getPageById(Integer id) {
+        try {
+            Optional<Page> pageOptional = pageRepository.findById(id);
+            if (pageOptional.isEmpty())
+                throw new Exception("Page not found.");
+
+            log.info(MessageUtils.retrieveSuccessMessage(PAGE));
+            return pageOptional.get();
+        } catch (Exception e) {
+            String errorMessage = MessageUtils.retrieveErrorMessage(PAGE);
+            log.error(errorMessage);
+            throw new ServiceException(errorMessage, e);
+        }
+    }
+
+    @Override
+    public void updatePage(Integer id, PageRO pageRO) {
+        try {
+            Optional<Page> pageOptional = pageRepository.findById(id);
+            if (pageOptional.isEmpty())
+                throw new ResourceNotFoundException("Page not found to be updated :(.");
+            pageRepository.save(pageRO.toEntity(pageOptional.get(), pageOptional.get().getModule()));
+        } catch (Exception e) {
+            String errorMessage = MessageUtils.saveErrorMessage(PAGE);
+            log.error(errorMessage);
+            throw new ServiceException(errorMessage, e);
+        }
     }
 
     @Override
     public void deletePage(Integer id) {
-        Optional<Page> pageOptional = pageRepository.findById(id);
-        if (pageOptional.isPresent())
+        try {
+            Optional<Page> pageOptional = pageRepository.findById(id);
+
+            if (pageOptional.isEmpty())
+                throw new ResourceNotFoundException("Page not found to be deleted :(.");
+
             pageRepository.deleteById(id);
+        } catch (Exception e) {
+            String errorMessage = MessageUtils.deleteErrorMessage(PAGE);
+            log.error(errorMessage);
+            throw new ServiceException(errorMessage, e);
+        }
     }
 }
