@@ -35,7 +35,7 @@ public class Student implements Serializable {
     private String lastName;
 
     @Column(name = "middle_name", nullable = false)
-    private Character middleName;
+    private String middleName;
 
     @Column(name = "email", nullable = false)
     private String email;

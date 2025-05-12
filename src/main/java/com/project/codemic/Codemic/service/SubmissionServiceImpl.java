@@ -2,6 +2,7 @@ package com.project.codemic.Codemic.service;
 
 import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.SubmissionDTO;
+import com.project.codemic.Codemic.model.entity.Activity;
 import com.project.codemic.Codemic.model.entity.Student;
 import com.project.codemic.Codemic.model.entity.Submission;
 import com.project.codemic.Codemic.model.mapper.SubmissionMapper;
@@ -28,13 +29,18 @@ public class SubmissionServiceImpl implements SubmissionService {
     private SubmissionRepository submissionRepository;
 
     @Autowired
+    private ActivityService activityService;
+
+    @Autowired
     private SubmissionMapper submissionMapper;
 
 
     @Override
     public void createSubmission(SubmissionRO submissionRO) {
         try {
-            submissionRepository.save(submissionRO.toEntity(null, null));
+            Activity activity = activityService.getActivityById(submissionRO.activityId());
+
+            submissionRepository.save(submissionRO.toEntity(null, activity));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(SUBMISSION);
             log.error(errorMessage);

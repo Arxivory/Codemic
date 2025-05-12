@@ -32,7 +32,7 @@ public class Instructor implements Serializable {
     private String lastName;
 
     @Column(name = "middle_name", nullable = false)
-    private Character middleName;
+    private String middleName;
 
     @Column(name = "password", nullable = false)
     private String password;

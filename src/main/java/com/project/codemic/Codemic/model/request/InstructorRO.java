@@ -16,7 +16,7 @@ public record InstructorRO(
         String lastName,
 
         @NotNull(message = "Middle name initial is mandatory.")
-        Character middleName,
+        String middleName,
 
         @NotBlank(message = "Email is mandatory.")
         @Email(message = "Email should be valid.")

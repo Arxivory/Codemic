@@ -4,8 +4,11 @@ import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.StudentSubjectDTO;
 import com.project.codemic.Codemic.model.entity.Student;
 import com.project.codemic.Codemic.model.entity.StudentSubject;
+import com.project.codemic.Codemic.model.entity.Subject;
 import com.project.codemic.Codemic.model.mapper.StudentSubjectMapper;
+import com.project.codemic.Codemic.model.request.StudentRO;
 import com.project.codemic.Codemic.model.request.StudentSubjectRO;
+import com.project.codemic.Codemic.model.request.SubjectRO;
 import com.project.codemic.Codemic.repository.StudentSubjectRepository;
 import com.project.codemic.Codemic.util.MessageUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -28,12 +31,25 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
     private StudentSubjectRepository studentSubjectRepository;
 
     @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
     private StudentSubjectMapper studentSubjectMapper;
 
     @Override
     public void createStudentSubject(StudentSubjectRO studentSubjectRO) {
         try {
-            studentSubjectRepository.save(studentSubjectRO.toEntity(null, null, null));
+            Student student = studentService.getStudentById(studentSubjectRO.studentId());
+            Subject subject = subjectService.getSubjectById(studentSubjectRO.subjectId());
+
+            StudentSubject studentSubject = new StudentSubject();
+            studentSubject.setStudent(student);
+            studentSubject.setSubject(subject);
+
+            studentSubjectRepository.save(studentSubject);
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(STUDENTSUBJECT);
             log.error(errorMessage);

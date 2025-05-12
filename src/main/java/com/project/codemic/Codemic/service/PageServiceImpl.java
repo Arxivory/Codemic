@@ -1,6 +1,7 @@
 package com.project.codemic.Codemic.service;
 import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.PageDTO;
+import com.project.codemic.Codemic.model.entity.Module;
 import com.project.codemic.Codemic.model.entity.Page;
 import com.project.codemic.Codemic.model.entity.Student;
 import com.project.codemic.Codemic.model.mapper.PageMapper;
@@ -26,12 +27,17 @@ public class PageServiceImpl implements PageService {
     private PageRepository pageRepository;
 
     @Autowired
+    private ModuleService moduleService;
+
+    @Autowired
     private PageMapper pageMapper;
 
     @Override
     public void createPage(PageRO pageRO) {
         try {
-            pageRepository.save(pageRO.toEntity(null, null));
+            Module module = moduleService.getModuleById(pageRO.moduleId());
+
+            pageRepository.save(pageRO.toEntity(null, module));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(PAGE);
             log.error(errorMessage);

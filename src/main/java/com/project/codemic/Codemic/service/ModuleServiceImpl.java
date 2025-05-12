@@ -4,6 +4,7 @@ import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.ModuleDTO;
 import com.project.codemic.Codemic.model.entity.Module;
 import com.project.codemic.Codemic.model.entity.Student;
+import com.project.codemic.Codemic.model.entity.Subject;
 import com.project.codemic.Codemic.model.mapper.ModuleMapper;
 import com.project.codemic.Codemic.model.request.ModuleRO;
 import com.project.codemic.Codemic.repository.ModuleRepository;
@@ -28,12 +29,16 @@ public class ModuleServiceImpl implements ModuleService {
     private ModuleRepository moduleRepository;
 
     @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
     private ModuleMapper moduleMapper;
 
     @Override
     public void createModule(ModuleRO moduleRO) {
         try {
-            moduleRepository.save(moduleRO.toEntity(null, null));
+            Subject subject = subjectService.getSubjectById(moduleRO.subjectId());
+            moduleRepository.save(moduleRO.toEntity(null, subject));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(MODULE);
             log.error(errorMessage);

@@ -2,6 +2,7 @@ package com.project.codemic.Codemic.service;
 
 import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.TestcaseDTO;
+import com.project.codemic.Codemic.model.entity.Activity;
 import com.project.codemic.Codemic.model.entity.Student;
 import com.project.codemic.Codemic.model.entity.Testcase;
 import com.project.codemic.Codemic.model.mapper.TestcaseMapper;
@@ -28,13 +29,18 @@ public class TestcaseServiceImpl implements TestcaseService {
     private TestcaseRepository testcaseRepository;
 
     @Autowired
+    private ActivityService activityService;
+
+    @Autowired
     private TestcaseMapper testcaseMapper;
 
 
     @Override
     public void createTestcase(TestcaseRO testcaseRO) {
         try {
-            testcaseRepository.save(testcaseRO.toEntity(null, null));
+            Activity activity = activityService.getActivityById(testcaseRO.activityId());
+
+            testcaseRepository.save(testcaseRO.toEntity(null, activity));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(TESTCASE);
             log.error(errorMessage);

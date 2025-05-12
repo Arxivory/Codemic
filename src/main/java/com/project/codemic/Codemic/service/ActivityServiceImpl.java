@@ -4,6 +4,7 @@ import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.ActivityDTO;
 import com.project.codemic.Codemic.model.entity.Activity;
 import com.project.codemic.Codemic.model.entity.Student;
+import com.project.codemic.Codemic.model.entity.Subject;
 import com.project.codemic.Codemic.model.mapper.ActivityMapper;
 import com.project.codemic.Codemic.model.request.ActivityRO;
 import com.project.codemic.Codemic.repository.ActivityRepository;
@@ -28,12 +29,17 @@ public class ActivityServiceImpl implements ActivityService {
     private ActivityRepository activityRepository;
 
     @Autowired
+    private SubjectService subjectService;
+
+    @Autowired
     private ActivityMapper activityMapper;
 
     @Override
     public void createActivity(ActivityRO activityRO) {
         try {
-            activityRepository.save(activityRO.toEntity(null, null));
+            Subject subject = subjectService.getSubjectById(activityRO.subjectId());
+
+            activityRepository.save(activityRO.toEntity(null, subject));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(ACTIVITY);
             log.error(errorMessage);

@@ -2,6 +2,7 @@ package com.project.codemic.Codemic.service;
 
 import com.project.codemic.Codemic.exception.ResourceNotFoundException;
 import com.project.codemic.Codemic.model.dto.SubjectDTO;
+import com.project.codemic.Codemic.model.entity.Instructor;
 import com.project.codemic.Codemic.model.entity.Student;
 import com.project.codemic.Codemic.model.entity.Subject;
 import com.project.codemic.Codemic.model.mapper.SubjectMapper;
@@ -28,12 +29,16 @@ public class SubjectServiceImpl implements SubjectService {
     private SubjectRepository subjectRepository;
 
     @Autowired
+    private InstructorService instructorService;
+
+    @Autowired
     private SubjectMapper subjectMapper;
     
     @Override
     public void createSubject(SubjectRO subjectRO) {
         try {
-            subjectRepository.save(subjectRO.toEntity(null, null));
+            Instructor instructor = instructorService.getInstructorById(subjectRO.instructorId());
+            subjectRepository.save(subjectRO.toEntity(null, instructor));
         } catch (Exception e) {
             String errorMessage = MessageUtils.saveErrorMessage(SUBJECT);
             log.error(errorMessage);
