@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TestcaseService {
+    String TESTCASES = "Testcases";
+
+    String TESTCASE = "Testcase";
+
     void createTestcase(TestcaseRO testcaseRO);
 
     List<TestcaseDTO> getAllTestcases();

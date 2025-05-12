@@ -9,6 +9,10 @@ import java.util.Optional;
 
 public interface ModuleService {
 
+    String MODULES = "Modules";
+
+    String MODULE = "Module";
+
     void createModule(ModuleRO moduleRO);
 
     List<ModuleDTO> getAllModules();

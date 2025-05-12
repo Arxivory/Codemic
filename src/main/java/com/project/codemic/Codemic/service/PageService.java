@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Optional;
 public interface PageService {
 
+    String PAGES = "Pages";
+
+    String PAGE = "Page";
+
     void createPage(PageRO pageRO);
 
     List<PageDTO> getAllPages();

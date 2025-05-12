@@ -8,6 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
+    String STUDENTS = "Students";
+
+    String STUDENT = "Student";
+
     void createStudent(StudentRO studentRO);
 
     List<StudentDTO> getAllStudents();

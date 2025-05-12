@@ -5,9 +5,12 @@ import com.project.codemic.Codemic.model.entity.Instructor;
 import com.project.codemic.Codemic.model.request.InstructorRO;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface InstructorService {
+    String INSTRUCTORS = "Instructors";
+
+    String INSTRUCTOR = "Instructor";
+
     void createInstructor(InstructorRO instructorRO);
 
     List<InstructorDTO> getAllInstructors();
@@ -16,5 +19,5 @@ public interface InstructorService {
 
     void updateInstructor(Integer id, InstructorRO instructorRO);
 
-    void deleteInstructorById(Integer id);
+    void deleteInstructor(Integer id);
 }

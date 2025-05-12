@@ -86,7 +86,7 @@ public class InstructorServiceImpl implements InstructorService {
 
 
     @Override
-    public void deleteInstructorById(Integer id) {
+    public void deleteInstructor(Integer id) {
         try {
             Optional<Instructor> instructorOptional = instructorRepository.findById(id);
 

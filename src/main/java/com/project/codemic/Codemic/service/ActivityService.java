@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ActivityService {
+    String ACTIVITIES = "Activities";
+
+    String ACTIVITY = "Activity";
+
     void createActivity(ActivityRO activityRO);
 
     List<ActivityDTO> getAllActivities();

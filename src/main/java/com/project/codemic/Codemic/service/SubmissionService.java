@@ -8,7 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SubmissionService {
-    
+
+    String SUBMISSIONS = "Submissions";
+
+    String SUBMISSION = "Submission";
+
     void createSubmission(SubmissionRO submissionRO);
     
     List<SubmissionDTO> getAllSubmissions();

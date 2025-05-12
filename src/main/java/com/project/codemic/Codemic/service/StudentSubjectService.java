@@ -8,6 +8,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentSubjectService {
+
+    String STUDENTSUBJECTS = "Studentsubjects";
+
+    String STUDENTSUBJECT = "Studentsubject";
+
     void createStudentSubject(StudentSubjectRO studentSubjectRO);
 
     List<StudentSubjectDTO> getAllStudentSubjects();
